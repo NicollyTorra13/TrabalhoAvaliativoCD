@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Monitoramento de Desastres</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #alertFeed { margin-top: 20px; }
+        .alert { padding: 10px; border: 1px solid red; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Monitoramento de Desastres</h1>
+    <div id="alertFeed"></div>
+
+    <script>
+        // Conecta ao servidor WebSocket
+        const socket = new WebSocket('ws://localhost:6789');
+
+        // Quando um alerta é recebido, exibe na página
+        socket.onmessage = (event) => {
+            const alertFeed = document.getElementById("alertFeed");
+            const alertElement = document.createElement("div");
+            alertElement.className = "alert";
+            alertElement.textContent = `Novo alerta: ${event.data}`;
+            alertFeed.appendChild(alertElement);
+        };
+
+        // Log de erro para problemas na conexão
+        socket.onerror = (error) => {
+            console.error("Erro no WebSocket:", error);
+        };
+    </script>
+</body>
+</html>
